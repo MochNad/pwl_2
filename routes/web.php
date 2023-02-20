@@ -25,9 +25,9 @@ use Illuminate\Support\Facades\Route;
 //     return "NIM : 2141720188, Nama : Moch. Nadi Rafli Maulana";
 // });
 
-Route::get('/articles/{id}', function ($id) {
-    return "Halaman Artikel ID : $id";
-});
+// Route::get('/articles/{id}', function ($id) {
+//     return "Halaman Artikel ID : $id";
+// });
 
 // Praktikum 2
 
