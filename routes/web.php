@@ -109,18 +109,25 @@ use Illuminate\Support\Facades\Route;
 
 // Praktikum 1
 
-Route::get('/', [HomeController::class, 'index']);
+// Route::get('/', [HomeController::class, 'index']);
 
-Route::prefix('category')->group(function () {
-    Route::get('/', [HomeController::class, 'product']);
-});
+// Route::prefix('category')->group(function () {
+//     Route::get('/', [HomeController::class, 'product']);
+// });
 
-Route::get('articles/{id}', [HomeController::class, 'news']);
+// Route::get('articles/{id}', [HomeController::class, 'news']);
 
-Route::prefix('program')->group(function () {
-    Route::get('/', [HomeController::class, 'program']);
-});
+// Route::prefix('program')->group(function () {
+//     Route::get('/', [HomeController::class, 'program']);
+// });
 
-Route::get('/about-us', [HomeController::class, 'aboutUs']);
+// Route::get('/about-us', [HomeController::class, 'aboutUs']);
 
-Route::resource('contact-us', ContactUsController::class)->only(['index']);
+// Route::resource('contact-us', ContactUsController::class)->only(['index']);
+
+// Praktikum 2
+
+Route::get('/', [BerandaController::class, 'index']);
+Route::get('/dashboard', [DashboardController::class, 'index']);
+Route::get('/profile', [ProfileController::class, 'index']);
+Route::get('/pengalaman-kuliah', [PengalamanKuliahController::class, 'index']);
