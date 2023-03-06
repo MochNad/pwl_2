@@ -70,6 +70,12 @@
                 <p>Keluarga</p>
               </a>
             </li>
+            <li class="nav-item">
+              <a href="{{ url('/mata-kuliah') }}" class="nav-link">
+                <i class="fas fa-calendar-day"></i>
+                <p>Mata Kuliah</p>
+              </a>
+            </li>
           </ul>
         </nav>
         <!-- /.sidebar-menu -->
