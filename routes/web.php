@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Auth\LoginController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use PHPUnit\TextUI\XmlConfiguration\Group;
 
 /*
 |--------------------------------------------------------------------------
@@ -127,12 +130,20 @@ use Illuminate\Support\Facades\Route;
 
 // Praktikum 2
 
-Route::get('/', [BerandaController::class, 'index']);
-Route::get('/dashboard', [DashboardController::class, 'index']);
-Route::get('/profile', [ProfileController::class, 'index']);
-Route::get('/pengalaman-kuliah', [PengalamanKuliahController::class, 'index']);
+Auth::routes();
 
-Route::get('/kendaraan', [KendaraanController::class, 'index']);
-Route::get('/hobi', [HobiController::class, 'index']);
-Route::get('/keluarga', [KeluargaController::class, 'index']);
-Route::get('/mata-kuliah', [MataKuliahController::class, 'index']);
+Route::get('/logout', [LoginController::class, 'logout']);
+
+Route::get('/login', [LoginController::class, 'showLoginForm']);
+
+Route::middleware(['auth'])->group(function() {
+    Route::get('/', [BerandaController::class, 'index']);
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/profile', [ProfileController::class, 'index']);
+    Route::get('/pengalaman-kuliah', [PengalamanKuliahController::class, 'index']);
+
+    Route::get('/kendaraan', [KendaraanController::class, 'index']);
+    Route::get('/hobi', [HobiController::class, 'index']);
+    Route::get('/keluarga', [KeluargaController::class, 'index']);
+    Route::get('/mata-kuliah', [MataKuliahController::class, 'index']);
+});
