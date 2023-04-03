@@ -134,8 +134,6 @@ Auth::routes();
 
 Route::get('/logout', [LoginController::class, 'logout']);
 
-Route::get('/login', [LoginController::class, 'showLoginForm']);
-
 Route::middleware(['auth'])->group(function() {
     Route::get('/', [BerandaController::class, 'index']);
     Route::get('/dashboard', [DashboardController::class, 'index']);
@@ -146,4 +144,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/hobi', [HobiController::class, 'index']);
     Route::get('/keluarga', [KeluargaController::class, 'index']);
     Route::get('/mata-kuliah', [MataKuliahController::class, 'index']);
+
+    Route::resource('/mahasiswa', MahasiswaController::class)->parameter('mahasiswa', 'id');
+
 });
