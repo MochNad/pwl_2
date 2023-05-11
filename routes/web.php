@@ -146,5 +146,5 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/mata-kuliah', [MataKuliahController::class, 'index']);
 
     Route::resource('/mahasiswa', MahasiswaController::class)->parameter('mahasiswa', 'id');
-
+    Route::get('/mahasiswa/{id}/nilai', [MahasiswaController::class, 'nilai']);
 });

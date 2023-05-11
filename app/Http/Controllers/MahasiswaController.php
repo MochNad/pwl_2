@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kelas;
 use App\Models\Mahasiswa;
+use App\Models\Mahasiswa_MataKuliah;
 use App\Models\MahasiswaModel;
 use App\Models\ProdiModel;
 use Illuminate\Http\Request;
@@ -74,6 +75,15 @@ class MahasiswaController extends Controller
     {
         $mahasiswa = MahasiswaModel::with('kelas')->where('id',$id)->first();
         return view('mahasiswa.detail_mahasiswa', ['mahasiswa' => $mahasiswa]);
+    }
+
+    public function nilai($id)
+    {
+        $mahasiswa = MahasiswaModel::where('id',$id)->first();
+        $nilai = Mahasiswa_MataKuliah::where('mahasiswa_id',$id)->get();
+        return view('mahasiswa.nilai_mahasiswa')
+                ->with('mahasiswa', $mahasiswa)
+                ->with('nilai', $nilai);
     }
 
     /**

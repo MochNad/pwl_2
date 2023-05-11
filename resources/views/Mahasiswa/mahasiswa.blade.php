@@ -67,6 +67,7 @@
                                   @method('DELETE')
                                   <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash pr-1"></i>Hapus</button>
                               </form>
+                              <a href="{{ url('/mahasiswa/'.$mhs->id.'/nilai') }}" class="btn btn-sm btn-primary"><i class="fas fa-marker"></i>Nilai</a>
                           </td>
                       </tr>
                   @endforeach
