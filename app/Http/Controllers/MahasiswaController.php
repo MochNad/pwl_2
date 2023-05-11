@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kelas;
 use App\Models\Mahasiswa;
 use App\Models\MahasiswaModel;
+use App\Models\ProdiModel;
 use Illuminate\Http\Request;
 
 use function PHPUnit\Framework\returnSelf;
@@ -17,9 +19,9 @@ class MahasiswaController extends Controller
      */
     public function index()
     {
-        $mhs = MahasiswaModel::all();
-        return view('mahasiswa.mahasiswa')
-                ->with('mhs', $mhs);
+        $mahasiswa = MahasiswaModel::with('kelas')->get();
+        $paginate = MahasiswaModel::orderBy('nim', 'asc')->paginate(3);
+        return view('mahasiswa.mahasiswa', ['mahasiswa' => $mahasiswa, 'paginate' => $paginate]);
     }
 
     /**
@@ -29,7 +31,9 @@ class MahasiswaController extends Controller
      */
     public function create()
     {
-        return view('mahasiswa.create_mahasiswa')
+        $prodi = ProdiModel::all();
+        $kelas = Kelas::all();
+        return view('mahasiswa.create_mahasiswa', ['kelas' => $kelas, 'prodi' => $prodi])
                 ->with('url_form', url('/mahasiswa'));
     }
 
@@ -44,6 +48,8 @@ class MahasiswaController extends Controller
         $request->validate([
             'nim' => 'required|string|max:10|unique:mahasiswa,nim',
             'nama' => 'required|string|max:50',
+            'prodi_id' => 'required',
+            'kelas_id' => 'required',
             'jk' => 'required|in:l,p',
             'tempat_lahir' => 'required|string|max:10',
             'tanggal_lahir' => 'required|date',
@@ -52,6 +58,7 @@ class MahasiswaController extends Controller
         ]);
 
         MahasiswaModel::create($request->except(['_token']));
+        // $mahasiswa->prodi()->associate($request->prodi_id)->save();
 
         return redirect('mahasiswa')
                 ->with('success', 'Mahasiswa Berhasil Ditambahkan');
@@ -63,9 +70,10 @@ class MahasiswaController extends Controller
      * @param  \App\Models\Mahasiswa  $mahasiswa
      * @return \Illuminate\Http\Response
      */
-    public function show(MahasiswaModel $mahasiswa)
+    public function show($id)
     {
-        //
+        $mahasiswa = MahasiswaModel::with('kelas')->where('id',$id)->first();
+        return view('mahasiswa.detail_mahasiswa', ['mahasiswa' => $mahasiswa]);
     }
 
     /**
@@ -76,9 +84,10 @@ class MahasiswaController extends Controller
      */
     public function edit($id)
     {
-        $mahasiswa = MahasiswaModel::find($id);
-        return view('mahasiswa.create_mahasiswa')
-                ->with('mhs', $mahasiswa)
+        $mahasiswa = MahasiswaModel::with('prodi','kelas')->where('id', $id)->first();
+        $prodi = ProdiModel::all();
+        $kelas = Kelas::all();
+        return view('mahasiswa.create_mahasiswa', compact('mahasiswa','prodi','kelas'))
                 ->with('url_form', url('/mahasiswa/'. $id));
     }
 
@@ -94,6 +103,8 @@ class MahasiswaController extends Controller
         $request->validate([
             'nim' => 'required|string|max:10|unique:mahasiswa,nim,'.$id,
             'nama' => 'required|string|max:50',
+            'prodi_id' => 'required',
+            'kelas_id' => 'required',
             'jk' => 'required|in:l,p',
             'tempat_lahir' => 'required|string|max:10',
             'tanggal_lahir' => 'required|date',
