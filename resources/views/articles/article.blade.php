@@ -35,6 +35,7 @@
     </div>
     <div class="card-body">
       <a href="{{ url('articles/create') }}" class="btn btn-sm btn-success float-right my-2"><i class="fas fa-plus pr-1"></i>Tambah Data</a>
+      <a href="{{ url('articles/cetak_pdf') }}" class="btn btn-sm btn-success float-right my-2 mr-2"><i class="fas fa-print pr-1"></i></a>
       <table class="table table-bordered table-striped">
           <thead>
               <tr>
@@ -52,9 +53,9 @@
                           <td>{{ $a->title }}</td>
                           <td>{{ $a->content }}</td>
                           <td>
-                              <a href="{{ url('/articles/'.$a->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-info pr-1"></i>Detail</a>
-                              <a href="{{ url('/articles/'.$a->id.'/edit/') }}" class="btn btn-sm btn-warning"><i class="fas fa-edit pr-1"></i>Edit</a>
-                              <form method="POST" action="{{ url('/articles/'.$a->id)}}" class="d-inline p-2">
+                              <a href="{{ url('/articles/'.$a->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-info"></i>Detail</a>
+                              <a href="{{ url('/articles/'.$a->id.'/edit/') }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i>Edit</a>
+                              <form method="POST" action="{{ url('/articles/'.$a->id)}}" class="d-inline">
                                   @csrf
                                   @method('DELETE')
                                   <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash pr-1"></i>Hapus</button>
