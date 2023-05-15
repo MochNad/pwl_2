@@ -82,6 +82,12 @@
                 <p class="pl-3">Mahasiswa</p>
               </a>
             </li>
+            <li class="nav-item">
+              <a href="{{ url('/articles') }}" class="nav-link">
+                <i class="fas fa-users"></i>
+                <p class="pl-3">Artikel</p>
+              </a>
+            </li>
           </ul>
         </nav>
         <!-- /.sidebar-menu -->
