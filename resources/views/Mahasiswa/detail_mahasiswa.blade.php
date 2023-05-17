@@ -34,6 +34,9 @@
       </div>
     </div>
     <div class="card-body">
+        <div class="d-flex justify-content-center">
+          <img src="{{ asset('storage/' . $mahasiswa->foto) }}" width="240">
+        </div>
         <ul class="list-group list-group-flush">
             <li class="list-group-item"><b>NIM: </b> {{ $mahasiswa->nim }}</li>
             <li class="list-group-item"><b>Nama: </b> {{ $mahasiswa->nama }}</li>

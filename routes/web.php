@@ -143,7 +143,8 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/hobi', [HobiController::class, 'index']);
     Route::get('/keluarga', [KeluargaController::class, 'index']);
     Route::get('/mata-kuliah', [MataKuliahController::class, 'index']);
-
+    
+    Route::get('/mahasiswa/cetak_pdf/{id}', [MahasiswaController::class, 'cetak_pdf']);
     Route::resource('/mahasiswa', MahasiswaController::class)->parameter('mahasiswa', 'id');
     Route::get('/mahasiswa/{id}/nilai', [MahasiswaController::class, 'nilai']);
 

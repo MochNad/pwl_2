@@ -41,6 +41,7 @@
                   <th>No</th>
                   <th>NIM</th>
                   <th>Nama</th>
+                  <th>Foto</th>
                   <th>Prodi</th>
                   <th>Kelas</th>
                   <th>JK</th>
@@ -55,6 +56,9 @@
                           <td>{{ $i + 1 }}</td>
                           <td>{{ $mhs->nim }}</td>
                           <td>{{ $mhs->nama }}</td>
+                          <td>
+                            <img src="{{ asset('storage/' . $mhs->foto) }}" alt="{{ $mhs->nama }}" width="50">
+                          </td>
                           <td>{{ $mhs->prodi->prodi }}</td>
                           <td>{{ $mhs->kelas->nama_kelas }}</td>
                           <td>{{ $mhs->jk }}</td>
@@ -82,6 +86,7 @@
                   <th>No</th>
                   <th>NIM</th>
                   <th>Nama</th>
+                  <th>Foto</th>
                   <th>Prodi</th>
                   <th>Kelas</th>
                   <th>JK</th>

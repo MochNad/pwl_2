@@ -78,6 +78,7 @@
         </tfoot>
       </table>
       <a href="{{url('mahasiswa')}}" class="btn btn-default"><i class="fas fa-arrow-left pr-1"></i>Back</a>
+      <a href="{{url('/mahasiswa/cetak_pdf/'.$mahasiswa->id)}}" class="btn btn-success float-right"><i class="fas fa-save pr-1"></i>Cetak</a>
   </div>
     </div>
     <!-- /.card-body -->

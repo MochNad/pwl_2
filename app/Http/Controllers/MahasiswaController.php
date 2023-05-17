@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kelas;
-use App\Models\Mahasiswa;
 use App\Models\Mahasiswa_MataKuliah;
 use App\Models\MahasiswaModel;
 use App\Models\ProdiModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 use function PHPUnit\Framework\returnSelf;
 
@@ -49,20 +51,36 @@ class MahasiswaController extends Controller
         $request->validate([
             'nim' => 'required|string|max:10|unique:mahasiswa,nim',
             'nama' => 'required|string|max:50',
-            'prodi_id' => 'required',
+            'foto' => 'required|image|mimes:jpeg,png,jpg',
             'kelas_id' => 'required',
-            'jk' => 'required|in:l,p',
-            'tempat_lahir' => 'required|string|max:10',
+            'prodi_id' => 'required',
+            'jk' => 'required|in:L,P',
+            'tempat_lahir' => 'required|string|max:50',
             'tanggal_lahir' => 'required|date',
-            'alamat' => 'required|string|max:255',
-            'hp' => 'required|digits_between:6,15'
+            'alamat' => 'required|string|max:50',
+            'hp' => 'required|digits_between:6,15',
         ]);
 
-        MahasiswaModel::create($request->except(['_token']));
-        // $mahasiswa->prodi()->associate($request->prodi_id)->save();
+        $image_name = $request->file('foto')->store('images', 'public');
 
+        MahasiswaModel::create([
+            'nim' => $request->nim,
+            'nama' => $request->nama,
+            'foto' => $image_name,
+            'kelas_id' => $request->kelas_id,
+            'prodi_id' => $request->prodi_id,
+            'jk' => $request->jk,
+            'tempat_lahir' => $request->tempat_lahir,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'alamat' => $request->alamat,
+            'hp' => $request->hp,
+    
+        ]);
+
+        //$data = MahasiswaModel::create($request->except(['_token']));
         return redirect('mahasiswa')
-                ->with('success', 'Mahasiswa Berhasil Ditambahkan');
+            ->with('success', 'Mahasiswa Berhasil Ditambahkan');
+
     }
 
     /**
@@ -110,22 +128,38 @@ class MahasiswaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'nim' => 'required|string|max:10|unique:mahasiswa,nim,'.$id,
-            'nama' => 'required|string|max:50',
-            'prodi_id' => 'required',
+        $request ->validate([
+            'nim'=> 'required|string|max:10|unique:mahasiswa,nim,'.$id,
+            'nama'=> 'required|string|max:50',
+            'foto' => 'image|mimes:jpeg,png,jpg',
             'kelas_id' => 'required',
-            'jk' => 'required|in:l,p',
-            'tempat_lahir' => 'required|string|max:10',
+            'jk' => 'required|in:L,P',
+            'tempat_lahir' => 'required|string|max:50',
             'tanggal_lahir' => 'required|date',
-            'alamat' => 'required|string|max:255',
-            'hp' => 'required|digits_between:6,15'
+            'alamat' => 'required|string|max:50',
+            'hp' => 'required|digits_between:6,15',
+
         ]);
 
-        MahasiswaModel::where('id','=', $id)->update($request->except(['_token', '_method']));
+        Mahasiswamodel::where('id', '=', $id)->update($request->except(['_token','_method']));
+
+        $image_name = $request->file('foto')->store('images', 'public');
+
+        MahasiswaModel::where('id', $id)->update([
+            'nim' => $request->nim,
+            'nama' => $request->nama,
+            'foto' => $image_name,
+            'jk' => $request->jk,
+            'tempat_lahir' => $request->tempat_lahir,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'alamat' => $request->alamat,
+            'hp' => $request->hp,
+            'kelas_id' => $request->kelas_id,
+            'prodi_id' => $request->prodi_id,
+        ]);
 
         return redirect('mahasiswa')
-                ->with('success', 'Mahasiswa Berhasil Diupdate');
+            ->with('success','Mahasiswa Berhasil Ditambahkan');
     }
 
     /**
@@ -136,8 +170,22 @@ class MahasiswaController extends Controller
      */
     public function destroy($id)
     {
-        MahasiswaModel::where('id', '=', $id)->delete();
-        return redirect('mahasiswa')
-        ->with('success', 'Mahasiswa Berhasil Dihapus');
+        $mahasiswa = Mahasiswamodel::find($id);
+        
+        Storage::disk('public')->delete($mahasiswa->foto);
+        $mahasiswa->delete();
+        
+        return redirect('mahasiswa') 
+        ->with ('success', 'Mahasiswa Berhasil Dihapus');
+    }
+
+    public function cetak_pdf($id) {
+        $mahasiswa = MahasiswaModel::where('id',$id)->first();
+        $nilai = Mahasiswa_MataKuliah::where('mahasiswa_id',$id)->get();
+        // return view('mahasiswa.mahasiswa_pdf')
+        //         ->with('mahasiswa', $mahasiswa)
+        //         ->with('nilai', $nilai);
+        $pdf = Pdf::loadview('mahasiswa.mahasiswa_pdf', ['mahasiswa' => $mahasiswa, 'nilai' => $nilai]);
+        return $pdf->stream();
     }
 }
